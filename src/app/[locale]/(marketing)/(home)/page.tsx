@@ -12,14 +12,24 @@ export async function generateMetadata({
   params: Promise<{ locale: Locale }>;
 }): Promise<Metadata | undefined> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: 'Metadata' });
+  // const t = await getTranslations({ locale, namespace: 'Metadata' });
 
-  return constructMetadata({
-    title: t('title'),
-    description: t('description'),
+  const baseMetadata = constructMetadata({
+    title: 'AI Report Card Generator | Kriterix by ReportCardAI',
+    description: 'The #1 professional Report Card Comment Generator for teachers. Specialized in IB, AP, and Special Education (SPED/IEP) feedback. Save 10 hours this term.',
     locale,
     pathname: '',
   });
+
+  return {
+    ...baseMetadata,
+    keywords: ['report card comments', 'ai teacher tool', 'report card generator', 'IB comment bank', 'SPED report writer'],
+    openGraph: {
+      ...baseMetadata.openGraph,
+      title: 'Write Report Cards in Seconds (Free)',
+      description: 'Stop staring at blank screens. Use Kriterix AI to generate professional, compliant feedback.',
+    },
+  };
 }
 
 interface HomePageProps {
