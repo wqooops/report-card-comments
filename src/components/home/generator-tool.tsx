@@ -14,6 +14,8 @@ export function GeneratorTool() {
   const [studentName, setStudentName] = useState('');
   const [framework, setFramework] = useState('General / Common Core');
   const [strength, setStrength] = useState('');
+  const [weakness, setWeakness] = useState('');
+  const [tone, setTone] = useState('Professional');
   const [generatedComment, setGeneratedComment] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
@@ -29,7 +31,9 @@ export function GeneratorTool() {
         body: JSON.stringify({
           studentName,
           framework,
-          strength
+          strength,
+          weakness,
+          tone
         }),
       });
 
@@ -104,6 +108,33 @@ export function GeneratorTool() {
             value={strength}
             onChange={(e) => setStrength(e.target.value)}
           />
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="weakness" className="text-sm font-medium text-slate-700">Weakness (Optional)</Label>
+            <Input 
+              id="weakness"
+              placeholder="e.g., Time management"
+              className="w-full bg-white border-slate-300 focus-visible:ring-brand-500 placeholder:text-slate-400"
+              // We need to add state for weakness
+              onChange={(e) => setWeakness(e.target.value)}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="tone" className="text-sm font-medium text-slate-700">Tone (Optional)</Label>
+             <Select onValueChange={setTone}>
+              <SelectTrigger id="tone" className="w-full bg-white border-slate-300 focus:ring-brand-500">
+                <SelectValue placeholder="Professional" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Professional">Professional</SelectItem>
+                <SelectItem value="Encouraging">Encouraging</SelectItem>
+                <SelectItem value="Strict">Strict</SelectItem>
+                <SelectItem value="Warm">Warm</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
 
         <Button 
