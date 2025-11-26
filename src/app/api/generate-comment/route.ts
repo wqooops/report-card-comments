@@ -31,20 +31,20 @@ function getRateLimit(ip: string) {
 
 export async function POST(req: Request) {
   try {
-    // 1. Rate Limiting
-    const headersList = await headers();
-    const ip = headersList.get('x-forwarded-for') || 'unknown';
-    const rateLimit = getRateLimit(ip);
+    // 1. Rate Limiting (Disabled for testing/MVP as per request)
+    // const headersList = await headers();
+    // const ip = headersList.get('x-forwarded-for') || 'unknown';
+    // const rateLimit = getRateLimit(ip);
 
-    if (rateLimit.count >= MAX_REQUESTS_PER_WINDOW) {
-      return Response.json(
-        { error: 'Rate limit exceeded. Please try again later.' },
-        { status: 429 }
-      );
-    }
+    // if (rateLimit.count >= MAX_REQUESTS_PER_WINDOW) {
+    //   return Response.json(
+    //     { error: 'Rate limit exceeded. Please try again later.' },
+    //     { status: 429 }
+    //   );
+    // }
 
-    rateLimit.count++;
-    rateLimitMap.set(ip, rateLimit);
+    // rateLimit.count++;
+    // rateLimitMap.set(ip, rateLimit);
 
     // 2. Input Validation & Parsing
     const body = (await req.json()) as GenerateCommentRequest;

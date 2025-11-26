@@ -1,34 +1,34 @@
-# CLAUDE.md - Project Context
+# CLAUDE.md - 项目上下文
 
-## Project: ReportCardAI.com (Kriterix Engine)
+## 项目：ReportCardAI.com (Kriterix 引擎)
 
-### Core Identity
-*   **Name**: ReportCardAI.com
-*   **Engine**: Kriterix Engine
-*   **Mission**: Save teachers time with high-quality, framework-aligned report card comments.
+### 核心身份
+*   **名称**：ReportCardAI.com
+*   **引擎**：Kriterix 引擎
+*   **使命**：通过高质量、符合框架的成绩单评语为教师节省时间。
 
-### Tech Stack
-*   **Framework**: Next.js 14 (App Router)
-*   **Styling**: Tailwind CSS v4, Shadcn/UI
-*   **AI**: Google Gemini (via Vercel AI SDK)
-*   **Language**: TypeScript
+### 技术栈
+*   **框架**：Next.js 14 (App Router)
+*   **样式**：Tailwind CSS v4, Shadcn/UI
+*   **AI**：Google Gemini (通过 Vercel AI SDK)
+*   **语言**：TypeScript
 
-### Key Directories
-*   `src/app`: Next.js App Router pages and API routes.
-*   `src/components`: React components (UI, Home, Layout).
-*   `src/lib`: Utility functions.
-*   `src/styles`: Global styles (CSS variables, Tailwind config).
+### 关键目录
+*   `src/app`：Next.js App Router 页面和 API 路由。
+*   `src/components`：React 组件 (UI, 主页, 布局)。
+*   `src/lib`：工具函数。
+*   `src/styles`：全局样式 (CSS 变量, Tailwind 配置)。
 
-### Commands
-*   `npm run dev`: Start dev server.
-*   `npm run build`: Build for production.
-*   `npm run lint`: Run linter.
+### 常用命令
+*   `npm run dev`：启动开发服务器。
+*   `npm run build`：构建生产版本。
+*   `npm run lint`：运行代码检查。
 
-### Development Guidelines
-*   **Design**: Use "Kriterix" brand colors (Blue palette). Clean, modern, SaaS aesthetic.
-*   **Code Style**: Functional React components, Hooks, strict TypeScript.
-*   **AI Logic**:
-    *   Always respect the "Framework" (IB, SPED, ESL).
-    *   IB: Inject Learner Profile attributes.
-    *   SPED: Asset-based language only.
-*   **Security**: Rate limit public APIs. Do not store PII in logs.
+### 开发指南
+*   **设计**：使用 "Kriterix" 品牌色（蓝色系）。保持整洁、现代的 SaaS 美学。
+*   **代码风格**：函数式 React 组件，Hooks，严格的 TypeScript。
+*   **AI 逻辑**：
+    *   始终尊重“框架”（IB, SPED, ESL）。
+    *   IB：注入学习者档案（Learner Profile）属性。
+    *   SPED：仅使用基于资产（Asset-Based）的语言。
+*   **安全**：对公共 API 进行速率限制（目前开发阶段可能暂时禁用）。不要在日志中存储个人身份信息 (PII)。
