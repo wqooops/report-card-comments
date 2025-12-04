@@ -85,7 +85,7 @@ export function NavbarMobile({
         {/* navbar left shows logo */}
         {/* navbar left shows logo */}
         <LocaleLink href={Routes.Root} className="flex items-center gap-3">
-          <Logo className="size-10 rounded-xl" />
+          <Logo className="h-10 w-auto rounded-xl" />
           <div className="flex flex-col leading-none">
             <span className="text-xl font-bold text-foreground tracking-tight">
               {t('Metadata.name')}

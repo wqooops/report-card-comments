@@ -26,9 +26,9 @@ export function Logo({ className }: { className?: string }) {
       src={logo}
       alt="Logo"
       title="Logo"
-      width={40}
+      width={73}
       height={40}
-      className={className || 'size-8 rounded-md'}
+      className={className || 'h-8 w-auto rounded-md'}
     />
   );
 }
