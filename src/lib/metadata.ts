@@ -67,7 +67,7 @@ export function constructMetadata({
     },
     icons: {
       icon: '/favicon.ico',
-      shortcut: '/favicon-32x32.png',
+      shortcut: '/favicon-32x32.webp',
       apple: '/apple-touch-icon.png',
     },
     metadataBase: new URL(getBaseUrl()),
