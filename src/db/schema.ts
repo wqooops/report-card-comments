@@ -123,3 +123,30 @@ export const creditTransaction = pgTable("credit_transaction", {
 	creditTransactionUserIdIdx: index("credit_transaction_user_id_idx").on(table.userId),
 	creditTransactionTypeIdx: index("credit_transaction_type_idx").on(table.type),
 }));
+
+export const guestUsage = pgTable("guest_usage", {
+	ipAddress: text("ip_address").primaryKey(),
+	count: integer("count").notNull().default(0),
+	lastUsedAt: timestamp("last_used_at").notNull().defaultNow(),
+});
+
+export const students = pgTable("students", {
+	id: text("id").primaryKey(),
+	userId: text("user_id").notNull().references(() => user.id, { onDelete: 'cascade' }),
+	name: text("name").notNull(),
+	grade: text("grade"),
+	attributes: text("attributes"), // Storing as JSON string for simplicity, or use jsonb if preferred
+	createdAt: timestamp("created_at").notNull().defaultNow(),
+	updatedAt: timestamp("updated_at").notNull().defaultNow(),
+}, (table) => ({
+	studentUserIdIdx: index("student_user_id_idx").on(table.userId),
+}));
+
+export const reports = pgTable("reports", {
+	id: text("id").primaryKey(),
+	studentId: text("student_id").notNull().references(() => students.id, { onDelete: 'cascade' }),
+	content: text("content").notNull(),
+	createdAt: timestamp("created_at").notNull().defaultNow(),
+}, (table) => ({
+	reportStudentIdIdx: index("report_student_id_idx").on(table.studentId),
+}));

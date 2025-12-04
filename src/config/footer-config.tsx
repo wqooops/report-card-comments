@@ -43,16 +43,6 @@ export function useFooterLinks(): NestedMenuItem[] {
       title: 'Resources',
       items: [
         {
-          title: 'Blog',
-          href: '#',
-          external: false,
-        },
-        {
-          title: 'Comment Bank',
-          href: '#',
-          external: false,
-        },
-        {
           title: 'Help Center',
           href: '#',
           external: false,

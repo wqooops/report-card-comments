@@ -1,8 +1,8 @@
 {
   "Metadata": {
-    "name": "MkSaaS Demo",
-    "title": "MkSaaS - 最好的 AI SaaS 模板",
-    "description": "MkSaaS 是构建 AI SaaS 的最佳模板，使用 MkSaaS 可以在几天内轻松构建您的 AI SaaS，简单且毫不费力。"
+    "name": "Kriterix",
+    "title": "AI 成绩单生成器 | Kriterix by ReportCardAI",
+    "description": "最适合教师的 AI 成绩单生成器。即时生成 IB、SPED 和通用评语。"
   },
   "Common": {
     "premium": "付费文章",
@@ -321,6 +321,208 @@
     "loadingContent": "加载完整内容..."
   },
   "Marketing": {
+    "home": {
+      "hero": {
+        "badge": "超过 10,000 名教育工作者信赖",
+        "title": "最适合教师的 <span>AI 成绩单生成器</span>",
+        "description": "使用 Kriterix 引擎在几秒钟内生成专业、符合 IB 标准和 SPED 规范的成绩单评语。在这个报告季节省数小时。",
+        "features": {
+          "ib": "符合 IB & AP 标准",
+          "ferpa": "FERPA 隐私保护",
+          "asset": "基于优势的评估"
+        }
+      },
+      "socialProof": {
+        "trustedBy": "来自以下教育体系学校的教师信赖"
+      },
+      "problemSolution": {
+        "title": "停止盯着 <span>空白屏幕</span> 发呆",
+        "subtitle": "写成绩单不应该意味着牺牲周末和无尽的压力。",
+        "oldWay": {
+          "title": "传统方式",
+          "items": {
+            "0": "花费数小时从旧文档复制粘贴",
+            "1": "通用、重复的评语",
+            "2": "很难找到委婉的方式表达“需要改进”",
+            "3": "手动检查语法和语气",
+            "4": "周末都花在写报告上"
+          }
+        },
+        "newWay": {
+          "title": "Kriterix 方式",
+          "items": {
+            "0": "几秒钟内生成即时、个性化的草稿",
+            "1": "基于优势、成长型思维的语言",
+            "2": "符合 IB、AP 和 SPED 框架",
+            "3": "自动润色语法和语气",
+            "4": "几分钟搞定，享受你的周末"
+          }
+        }
+      },
+      "generator": {
+        "title": "成绩单评语",
+        "subtitle": "根据学生的优势和成长领域生成成绩单评语。",
+        "gradeLevel": "年级",
+        "pronouns": "学生代词",
+        "pronounsPlaceholder": "他/她/他们 等",
+        "strength": "优势领域",
+        "strengthPlaceholder": "值得表扬的地方",
+        "growth": "成长领域",
+        "growthPlaceholder": "需要改进的地方",
+        "generate": "生成",
+        "regenerate": "重新生成",
+        "result": "结果",
+        "copy": "复制",
+        "copied": "已复制",
+        "poweredBy": "由 Kriterix 引擎驱动",
+        "showExemplar": "显示示例",
+        "exemplarReady": "示例已就绪！",
+        "exemplarDescription": "我们已填充示例输入并生成了示例输出。",
+        "scrollToView": "滚动查看输出",
+        "exemplarBadge": "示例"
+      },
+      "howItWorks": {
+        "title": "<span>3 个简单步骤</span> 生成专业报告",
+        "subtitle": "无需复杂设置。无需培训。直接开始写作。",
+        "steps": {
+          "step1": {
+            "title": "1. 导入数据",
+            "description": "通过 CSV/Excel 上传学生名单或手动输入详细信息。我们处理格式。"
+          },
+          "step2": {
+            "title": "2. 自定义",
+            "description": "为每个学生选择语气、长度以及具体的优势/成长领域。"
+          },
+          "step3": {
+            "title": "3. 生成",
+            "description": "即时获得专业、个性化的评语。如果需要，进行编辑，然后导出。"
+          }
+        }
+      },
+      "bentoGrid": {
+        "title": "你需要的一切，只为 <br></br> <span>写出更好的报告</span>",
+        "multilingual": {
+          "title": "30+ 种语言",
+          "description": "与每个家庭沟通。即时将您的评语翻译成西班牙语、法语、中文、阿拉伯语等 25 种以上的语言，具有母语级的准确性。"
+        },
+        "frameworks": {
+          "title": "教育框架",
+          "description": "专为 IB (MYP/DP)、AP、Common Core 和英国国家课程构建。我们懂您学校的语言。"
+        },
+        "tone": {
+          "title": "语气调整",
+          "description": "正式报告用正式语气，进度更新用鼓励语气。您选择声音。"
+        },
+        "privacy": {
+          "title": "隐私与安全",
+          "description": "符合 FERPA 和 GDPR 标准。我们从不存储学生 PII 用于训练模型。"
+        },
+        "engine": {
+          "title": "Kriterix 引擎™",
+          "description": "我们的专有微调模型比通用 AI 更懂教学细微差别。它像资深教师一样写作，而不是机器人。"
+        }
+      },
+      "useCases": {
+        "title": "看见 <span>Kriterix 的不同</span>",
+        "subtitle": "由我们的引擎生成的真实示例。注意细微差别、语气和特异性。",
+        "tabs": {
+          "highAchiever": "优等生",
+          "needsImprovement": "待改进",
+          "esl": "ESL / ELL"
+        },
+        "labels": {
+          "studentProfile": "学生档案",
+          "student": "学生",
+          "grade": "成绩",
+          "keyTraits": "关键特征",
+          "focusTopic": "重点主题",
+          "generatedComment": "生成的评语"
+        },
+        "examples": {
+          "highAchiever": {
+            "student": "Sarah (8年级 科学)",
+            "grade": "A",
+            "traits": {
+              "0": "好奇",
+              "1": "领导者"
+            },
+            "topic": "生态系统",
+            "output": "Sarah 始终表现出对生态学概念的卓越理解。她关于当地生态系统的项目非常出色，展示了深厚的研究和分析能力。她在小组实验中自然地承担起领导角色，耐心清晰地指导同伴。Sarah 的好奇心推动了课堂讨论，经常提出有见地的问题，将课堂学习与现实世界的环境问题联系起来。"
+          },
+          "needsImprovement": {
+            "student": "Jason (5年级 数学)",
+            "grade": "C-",
+            "traits": {
+              "0": "分心",
+              "1": "潜力"
+            },
+            "topic": "分数",
+            "output": "Jason 在理解基本分数概念方面表现出潜力，但在一致性方面有些挣扎。他从一对一的支持和视觉辅助中受益匪浅。然而，Jason 在独立工作时间经常分心，这影响了他完成作业的能力。我鼓励他在遇到困难时立即寻求帮助，而不是脱离学习。随着注意力的集中，我相信 Jason 可以掌握这些基础技能。"
+          },
+          "esl": {
+            "student": "Maria (3年级)",
+            "grade": "B",
+            "traits": {
+              "0": "努力",
+              "1": "进步中"
+            },
+            "topic": "阅读",
+            "output": "本学期，Maria 在英语阅读流畅度方面取得了值得称赞的进步。她以坚定的决心学习新词汇，并开始更频繁地自我纠正发音。虽然她在较大的群体中有时会犹豫发言，但她的书面理解能力正在稳步提高。我鼓励 Maria 继续在家朗读，以建立口语表达的自信。"
+      }
+        }
+      },
+      "testimonials": {
+        "title": "<span>深受各地教师</span> 喜爱",
+        "reviews": {
+          "0": {
+            "name": "Sarah Jenkins",
+            "role": "5年级教师",
+            "text": "我以前整个感恩节假期都在写报告。今年，我在2小时内完成了28名学生的报告。评语实际上比我自己写的还要好。"
+          },
+          "1": {
+            "name": "Mark Thompson",
+            "role": "高中历史",
+            "text": "IB 集成是救星。它实际上理解标准 A 和 B 之间的区别。我的协调员对反馈的质量印象深刻。"
+          },
+          "2": {
+            "name": "Emily Chen",
+            "role": "特殊教育",
+            "text": "终于有一个工具可以帮助我写 IEP 进度报告，而听起来不像是机器人。它帮助我以支持性、成长导向的方式构建挑战。"
+          }
+        }
+      },
+      "cta": {
+        "title": "准备好本学期节省 20 小时了吗？",
+        "subtitle": "加入 10,000+ 名已切换到 Kriterix 以实现无压力成绩单写作的教师。",
+        "buttons": {
+          "start": "免费开始写作",
+          "pricing": "查看价格"
+        },
+        "footer": "无需信用卡 • 包含 50 个免费积分"
+      },
+      "faq": {
+        "title": "常见问题",
+        "subtitle": "关于 Kriterix 成绩单生成器您需要了解的一切。",
+        "questions": {
+          "0": {
+            "question": "这个 AI 成绩单生成器免费吗？",
+            "answer": "是的！您可以免费使用此页面上的工具生成评语。我们提供名为 'Kriterix Pro' 的高级版本，用于批量生成、CSV 上传和保存学生历史记录。"
+          },
+          "1": {
+            "question": "可以为 IB MYP/DP 写评语吗？",
+            "answer": "当然可以。在下拉菜单中选择 'IB (MYP/DP)'。我们的引擎经过国际文凭组织标准和术语的训练，确保您的评语与具体学科目标和学习者档案保持一致。"
+          },
+          "2": {
+            "question": "学生数据安全吗（FERPA）？",
+            "answer": "是的。我们不会在服务器上存储免费生成器中输入的姓名或数据。处理通过我们的 API 合作伙伴安全进行，生成后立即丢弃，符合标准隐私惯例。"
+          },
+          "3": {
+            "question": "适用于 ESL/ELL 学生吗？",
+            "answer": "是的。选择 ESL 选项可生成简化、清晰的英语评语，专注于语言习得进度（听、说、读、写）。"
+          }
+        }
+      }
+    },
     "navbar": {
       "features": {
         "title": "功能"
@@ -544,7 +746,7 @@
           "selectDate": "选择日期",
           "button": "封禁用户",
           "success": "用户已被封禁",
-          "error": "封禁用户失败"
+          "fail": "封禁用户失败"
         },
         "unban": {
           "button": "解除封禁",

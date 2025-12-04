@@ -71,12 +71,12 @@ export const websiteConfig: WebsiteConfig = {
     },
   },
   blog: {
-    enable: true,
+    enable: false,
     paginationSize: 6,
     relatedPostsSize: 3,
   },
   docs: {
-    enable: true,
+    enable: false,
   },
   mail: {
     provider: 'resend',
@@ -84,7 +84,7 @@ export const websiteConfig: WebsiteConfig = {
     supportEmail: 'MkSaaS <support@mksaas.com>',
   },
   newsletter: {
-    enable: true,
+    enable: false,
     provider: 'resend',
     autoSubscribeAfterSignUp: true,
   },

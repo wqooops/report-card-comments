@@ -13,6 +13,7 @@ import {
   Settings2Icon,
   SettingsIcon,
   UsersRoundIcon,
+  FileTextIcon,
 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { websiteConfig } from './website';
@@ -38,6 +39,18 @@ export function useSidebarLinks(): NestedMenuItem[] {
       title: t('dashboard.title'),
       icon: <LayoutDashboardIcon className="size-4 shrink-0" />,
       href: Routes.Dashboard,
+      external: false,
+    },
+    {
+      title: 'Batch Import', // Hardcoded for now, should use translation key later
+      icon: <FileTextIcon className="size-4 shrink-0" />,
+      href: Routes.Batch,
+      external: false,
+    },
+    {
+      title: 'Reports History',
+      icon: <FileTextIcon className="size-4 shrink-0" />,
+      href: Routes.Reports,
       external: false,
     },
     {

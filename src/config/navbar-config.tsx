@@ -52,13 +52,13 @@ export function useNavbarLinks(): NestedMenuItem[] {
 
   return [
     {
-      title: 'Features',
-      href: '/#features',
+      title: 'Tools',
+      href: '/#hero',
       external: false,
     },
     {
-      title: 'FAQ',
-      href: '/#faq',
+      title: 'Features',
+      href: '/#features',
       external: false,
     },
   ];

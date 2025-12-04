@@ -1,10 +1,15 @@
+import { BentoGrid } from '@/components/home/bento-grid';
+import { CTA } from '@/components/home/cta';
 import { FAQ } from '@/components/home/faq';
-import { Features } from '@/components/home/features';
 import { Hero } from '@/components/home/hero';
+import { HowItWorks } from '@/components/home/how-it-works';
+import { ProblemSolution } from '@/components/home/problem-solution';
+import { SocialProof } from '@/components/home/social-proof';
+import { Testimonials } from '@/components/home/testimonials';
+import { UseCases } from '@/components/home/use-cases';
 import { constructMetadata } from '@/lib/metadata';
 import type { Metadata } from 'next';
 import type { Locale } from 'next-intl';
-import { getTranslations } from 'next-intl/server';
 
 export async function generateMetadata({
   params,
@@ -12,7 +17,6 @@ export async function generateMetadata({
   params: Promise<{ locale: Locale }>;
 }): Promise<Metadata | undefined> {
   const { locale } = await params;
-  // const t = await getTranslations({ locale, namespace: 'Metadata' });
 
   const baseMetadata = constructMetadata({
     title: 'AI Report Card Generator | Kriterix by ReportCardAI',
@@ -43,8 +47,14 @@ export default async function HomePage(props: HomePageProps) {
   return (
     <div className="flex flex-col min-h-screen bg-white">
       <Hero />
-      <Features />
+      <SocialProof />
+      <ProblemSolution />
+      <HowItWorks />
+      <BentoGrid />
+      <UseCases />
+      <Testimonials />
       <FAQ />
+      <CTA />
     </div>
   );
 }
