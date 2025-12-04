@@ -93,7 +93,7 @@ export function Footer({ className }: React.HTMLAttributes<HTMLElement>) {
       <div className="border-t py-8">
         <Container className="px-4 flex items-center justify-between gap-x-4">
           <span className="text-muted-foreground text-sm">
-            &copy; {new Date().getFullYear()} ReportCardAI.com | Powered by the Kriterix Engine.
+            &copy; {new Date().getFullYear()} ReportCardAI.com | Powered by Kriterix AI. | Privacy: No student data is stored permanently.
           </span>
 
           <div className="flex items-center gap-x-4">
