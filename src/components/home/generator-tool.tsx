@@ -7,15 +7,18 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { CheckCheck, Copy, Loader2, Lock, Sparkles, Wand2 } from 'lucide-react';
+import { CheckCheck, Copy, Loader2, Lock, Sparkles, Wand2, LogIn } from 'lucide-react';
 import { useAction } from 'next-safe-action/hooks';
 import Link from 'next/link';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { useTranslations } from 'next-intl';
+import { authClient } from '@/lib/auth-client';
+import { LoginWrapper } from '@/components/auth/login-wrapper';
 
 export function GeneratorTool() {
   const t = useTranslations('Marketing.home.generator');
+  const { data: session } = authClient.useSession();
   
   const [gradeLevel, setGradeLevel] = useState('9th grade');
   const [pronouns, setPronouns] = useState('');
@@ -24,6 +27,7 @@ export function GeneratorTool() {
   const [generatedComment, setGeneratedComment] = useState('');
   const [isCopied, setIsCopied] = useState(false);
   const [showLimitModal, setShowLimitModal] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
   const [isExemplarMode, setIsExemplarMode] = useState(false);
 
   const { execute, isExecuting } = useAction(generateCommentAction, {
@@ -49,8 +53,16 @@ export function GeneratorTool() {
   });
 
   const handleGenerate = () => {
+    // Check if field is filled
     if (!strength) return;
     
+    // Check if user is logged in
+    if (!session?.user) {
+      setShowLoginModal(true);
+      return;
+    }
+    
+    // Execute generation
     execute({
       gradeLevel,
       pronouns,
@@ -283,6 +295,29 @@ export function GeneratorTool() {
             <Button variant="ghost" onClick={() => setShowLimitModal(false)} className="w-full sm:w-auto mt-2 sm:mt-0">
               Maybe Later
             </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Login Required Dialog */}
+      <Dialog open={showLoginModal} onOpenChange={setShowLoginModal}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-brand-50">
+              <LogIn className="h-6 w-6 text-brand-600" />
+            </div>
+            <DialogTitle className="text-center">Login Required</DialogTitle>
+            <DialogDescription className="text-center">
+              Please login to generate report card comments. Free users get 50 credits daily (5 generations).
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="sm:justify-center">
+            <LoginWrapper mode="redirect">
+              <Button className="w-full" onClick={() => setShowLoginModal(false)}>
+                <LogIn className="mr-2 h-4 w-4" />
+                Login / Sign Up
+              </Button>
+            </LoginWrapper>
           </DialogFooter>
         </DialogContent>
       </Dialog>
