@@ -323,13 +323,13 @@
   "Marketing": {
     "home": {
       "hero": {
-        "badge": "Trusted by 10,000+ Educators",
-        "title": "The World's Smartest <span>Report Card Comments</span> Library.",
-        "description": "Don't just copy-paste. Use the Kriterix™ Engine to generate personalized, IB-aligned, and SPED-compliant comments in seconds.",
+        "badge": "The Ultimate Teacher Resource",
+        "title": "The World's Smartest <span class='text-brand-600 decoration-brand-600 underline decoration-4 underline-offset-4'>Report Card Comments</span> Library.",
+        "description": "Don't just copy-paste from static lists. Use the <span class='font-bold text-slate-900'>Kriterix™ Engine</span> to generate personalized, IB-aligned, and SPED-compliant comments in seconds.",
         "features": {
           "ib": "IB & AP Aligned",
-          "ferpa": "FERPA Private",
-          "asset": "Asset-Based"
+          "ferpa": "100% Private",
+          "asset": "SPED Compliant"
         }
       },
       "socialProof": {

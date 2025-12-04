@@ -1,5 +1,5 @@
 import { GeneratorTool } from '@/components/home/generator-tool';
-import { CheckCircle2, Star } from 'lucide-react';
+import { BarChart3, CheckCircle2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 export function Hero() {
@@ -16,33 +16,35 @@ export function Hero() {
           
           {/* Left Content */}
           <div className="flex flex-col justify-center space-y-8 text-center lg:text-left">
-            <div className="space-y-4">
-              <div className="inline-flex items-center rounded-full border border-brand-200 bg-brand-50 px-3 py-1 text-sm font-medium text-brand-800 w-fit mx-auto lg:mx-0">
-                <Star className="mr-2 h-3.5 w-3.5 fill-brand-600 text-brand-600" />
+            <div className="space-y-6">
+              <div className="inline-flex items-center rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-medium text-slate-600 w-fit mx-auto lg:mx-0 shadow-sm">
+                <BarChart3 className="mr-2 h-4 w-4 text-brand-600" />
                 {t('badge')}
               </div>
-              <h1 className="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl xl:text-6xl">
+              <h1 className="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl xl:text-6xl leading-[1.15]">
                 {t.rich('title', {
-                  span: (chunks: any) => <span className="text-brand-600">{chunks}</span>
+                  span: (chunks: any) => <span className="text-brand-600 underline decoration-brand-600 decoration-4 underline-offset-4">{chunks}</span>
                 })}
               </h1>
               <p className="max-w-[600px] text-lg text-slate-600 md:text-xl mx-auto lg:mx-0 leading-relaxed">
-                {t('description')}
+                {t.rich('description', {
+                  span: (chunks: any) => <span className="font-bold text-slate-900">{chunks}</span>
+                })}
               </p>
             </div>
 
             <div className="flex flex-col gap-3 min-[400px]:flex-row justify-center lg:justify-start">
-              <div className="flex items-center gap-2 text-sm text-slate-700">
-                <CheckCircle2 className="text-green-500 h-5 w-5" />
+              <div className="inline-flex items-center rounded-lg border border-slate-200 bg-slate-50/50 px-4 py-2 text-sm font-medium text-slate-700">
+                <CheckCircle2 className="mr-2 h-4 w-4 text-brand-600" />
                 <span>{t('features.ib')}</span>
               </div>
-              <div className="flex items-center gap-2 text-sm text-slate-700">
-                <CheckCircle2 className="text-green-500 h-5 w-5" />
-                <span>{t('features.ferpa')}</span>
-              </div>
-              <div className="flex items-center gap-2 text-sm text-slate-700">
-                <CheckCircle2 className="text-green-500 h-5 w-5" />
+              <div className="inline-flex items-center rounded-lg border border-slate-200 bg-slate-50/50 px-4 py-2 text-sm font-medium text-slate-700">
+                <CheckCircle2 className="mr-2 h-4 w-4 text-brand-600" />
                 <span>{t('features.asset')}</span>
+              </div>
+              <div className="inline-flex items-center rounded-lg border border-slate-200 bg-slate-50/50 px-4 py-2 text-sm font-medium text-slate-700">
+                <CheckCircle2 className="mr-2 h-4 w-4 text-brand-600" />
+                <span>{t('features.ferpa')}</span>
               </div>
             </div>
           </div>
