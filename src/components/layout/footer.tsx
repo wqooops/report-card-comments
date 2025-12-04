@@ -5,7 +5,7 @@ import { Logo } from '@/components/layout/logo';
 import { ModeSwitcherHorizontal } from '@/components/layout/mode-switcher-horizontal';
 // import BuiltWithButton from '@/components/shared/built-with-button';
 import { useFooterLinks } from '@/config/footer-config';
-import { useSocialLinks } from '@/config/social-config';
+// import { useSocialLinks } from '@/config/social-config';
 import { LocaleLink } from '@/i18n/navigation';
 import { cn } from '@/lib/utils';
 import { useTranslations } from 'next-intl';
@@ -14,7 +14,7 @@ import type React from 'react';
 export function Footer({ className }: React.HTMLAttributes<HTMLElement>) {
   const t = useTranslations();
   const footerLinks = useFooterLinks();
-  const socialLinks = useSocialLinks();
+  // const socialLinks = useSocialLinks();
 
   return (
     <footer className={cn('border-t', className)}>
@@ -36,7 +36,7 @@ export function Footer({ className }: React.HTMLAttributes<HTMLElement>) {
               </p>
 
               {/* social links */}
-              <div className="flex items-center gap-4 py-2">
+              {/* <div className="flex items-center gap-4 py-2">
                 <div className="flex items-center gap-2">
                   {socialLinks?.map((link) => (
                     <a
@@ -53,7 +53,7 @@ export function Footer({ className }: React.HTMLAttributes<HTMLElement>) {
                     </a>
                   ))}
                 </div>
-              </div>
+              </div> */}
 
               {/* built with button */}
               {/* <BuiltWithButton /> */}
