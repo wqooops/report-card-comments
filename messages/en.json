@@ -324,8 +324,8 @@
     "home": {
       "hero": {
         "badge": "The Ultimate Teacher Resource",
-        "title": "The World's Smartest <span class='text-brand-600 decoration-brand-600 underline decoration-4 underline-offset-4'>Report Card Comments</span> Library.",
-        "description": "Don't just copy-paste from static lists. Use the <span class='font-bold text-slate-900'>Kriterix™ Engine</span> to generate personalized, IB-aligned, and SPED-compliant comments in seconds.",
+        "title": "The World's Smartest <span>Report Card Comments</span> Library.",
+        "description": "Don't just copy-paste from static lists. Use the <span>Kriterix™ Engine</span> to generate personalized, IB-aligned, and SPED-compliant comments in seconds.",
         "features": {
           "ib": "IB & AP Aligned",
           "ferpa": "100% Private",
