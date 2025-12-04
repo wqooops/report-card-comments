@@ -83,9 +83,17 @@ export function NavbarMobile({
         {...other}
       >
         {/* navbar left shows logo */}
-        <LocaleLink href={Routes.Root} className="flex items-center gap-2">
-          <Logo />
-          <span className="text-xl font-semibold">{t('Metadata.name')}</span>
+        {/* navbar left shows logo */}
+        <LocaleLink href={Routes.Root} className="flex items-center gap-3">
+          <Logo className="size-10 rounded-xl" />
+          <div className="flex flex-col leading-none">
+            <span className="text-xl font-bold text-foreground tracking-tight">
+              {t('Metadata.name')}
+            </span>
+            <span className="text-xs text-muted-foreground font-medium">
+              ReportCardComments.org
+            </span>
+          </div>
         </LocaleLink>
 
         {/* navbar right shows menu icon and user button */}

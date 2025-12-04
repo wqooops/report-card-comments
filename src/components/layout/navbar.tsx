@@ -71,14 +71,16 @@ export function Navbar({ scroll }: NavBarProps) {
         <nav className="hidden lg:flex">
           {/* logo and name */}
           <div className="flex items-center">
-            <LocaleLink href="/" className="flex items-center space-x-2">
-              <Logo />
-              <span className="text-xl font-semibold">
-                {t('Metadata.name')}
-              </span>
-              <span className="text-xs text-muted-foreground font-medium bg-muted px-1.5 py-0.5 rounded-md">
-                by ReportCardAI
-              </span>
+            <LocaleLink href="/" className="flex items-center gap-3">
+              <Logo className="size-10 rounded-xl" />
+              <div className="flex flex-col leading-none">
+                <span className="text-xl font-bold text-foreground tracking-tight">
+                  {t('Metadata.name')}
+                </span>
+                <span className="text-xs text-muted-foreground font-medium">
+                  ReportCardComments.org
+                </span>
+              </div>
             </LocaleLink>
           </div>
 
