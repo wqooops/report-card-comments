@@ -57,6 +57,13 @@
       "when": 1764142962327,
       "tag": "0007_closed_echo",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1764851121486,
+      "tag": "0008_serious_captain_marvel",
+      "breakpoints": true
     }
   ]
 }

@@ -16,15 +16,44 @@ export async function getUserCredits(userId: string): Promise<number> {
   try {
     const db = await getDb();
 
-    // Optimized query: only select the needed field
-    // This can benefit from covering index if we add one later
+    // Get full record to access daily free credits fields
     const record = await db
-      .select({ currentCredits: userCredit.currentCredits })
+      .select()
       .from(userCredit)
       .where(eq(userCredit.userId, userId))
       .limit(1);
 
-    return record[0]?.currentCredits || 0;
+    if (!record || record.length === 0) {
+      return 0;
+    }
+
+    const credit = record[0];
+    const now = new Date();
+    const lastReset = credit.dailyFreeCreditsResetAt;
+    
+    // Check if we need to reset daily free credits (not the same day)
+    const isSameDay = lastReset && 
+      now.getFullYear() === lastReset.getFullYear() &&
+      now.getMonth() === lastReset.getMonth() &&
+      now.getDate() === lastReset.getDate();
+    
+    if (!isSameDay) {
+      // Reset daily free credits to 50
+      await db
+        .update(userCredit)
+        .set({
+          dailyFreeCredits: 50,
+          dailyFreeCreditsResetAt: now,
+          updatedAt: now,
+        })
+        .where(eq(userCredit.userId, userId));
+      
+      // Return total: 50 (daily free) + currentCredits (paid)
+      return 50 + (credit.currentCredits || 0);
+    }
+    
+    // Return total: dailyFreeCredits + currentCredits
+    return (credit.dailyFreeCredits || 0) + (credit.currentCredits || 0);
   } catch (error) {
     console.error('getUserCredits, error:', error);
     // Return 0 on error to prevent UI from breaking
@@ -216,9 +245,49 @@ export async function consumeCredits({
     );
     throw new Error('Insufficient credits');
   }
-  // FIFO consumption: consume from the earliest unexpired credits first
+
   const db = await getDb();
   const now = new Date();
+
+  // === STEP 1: Try to deduct from daily free credits first ===
+  const userCreditRecord = await db
+    .select()
+    .from(userCredit)
+    .where(eq(userCredit.userId, userId))
+    .limit(1);
+
+  let remainingToDeduct = amount;
+  const currentDailyFree = userCreditRecord[0]?.dailyFreeCredits || 0;
+
+  if (currentDailyFree > 0) {
+    const deductFromDaily = Math.min(currentDailyFree, amount);
+    
+    // Update daily free credits
+    await db
+      .update(userCredit)
+      .set({
+        dailyFreeCredits: currentDailyFree - deductFromDaily,
+        updatedAt: now,
+      })
+      .where(eq(userCredit.userId, userId));
+
+    remainingToDeduct -= deductFromDaily;
+
+    // Record daily free consumption
+    await saveCreditTransaction({
+      userId,
+      type: 'daily_free_consume',
+      amount: -deductFromDaily,
+      description: `${description} (daily free)`,
+    });
+
+    // If fully paid by daily free credits, we're done
+    if (remainingToDeduct <= 0) {
+      return;
+    }
+  }
+
+  // === STEP 2: FIFO consumption from paid credits (existing logic) ===
   const transactions = await db
     .select()
     .from(creditTransaction)
@@ -241,8 +310,7 @@ export async function consumeCredits({
       asc(creditTransaction.expirationDate),
       asc(creditTransaction.createdAt)
     );
-  // Consume credits
-  let remainingToDeduct = amount;
+  // Consume remaining credits from paid transactions
   for (const transaction of transactions) {
     if (remainingToDeduct <= 0) break;
     const remainingAmount = transaction.remainingAmount || 0;
@@ -258,24 +326,27 @@ export async function consumeCredits({
       .where(eq(creditTransaction.id, transaction.id));
     remainingToDeduct -= deductFromThis;
   }
-  // Update balance
+  // Update balance (only paid credits portion)
   const current = await db
     .select()
     .from(userCredit)
     .where(eq(userCredit.userId, userId))
     .limit(1);
-  const newBalance = (current[0]?.currentCredits || 0) - amount;
+  const paidCreditsUsed = amount - remainingToDeduct; // What was deducted from FIFO
+  const newBalance = (current[0]?.currentCredits || 0) - paidCreditsUsed;
   await db
     .update(userCredit)
     .set({ currentCredits: newBalance, updatedAt: new Date() })
     .where(eq(userCredit.userId, userId));
-  // Write usage record
-  await saveCreditTransaction({
-    userId,
-    type: CREDIT_TRANSACTION_TYPE.USAGE,
-    amount: -amount,
-    description,
-  });
+  // Write usage record (only for paid credits portion)
+  if (paidCreditsUsed > 0) {
+    await saveCreditTransaction({
+      userId,
+      type: CREDIT_TRANSACTION_TYPE.USAGE,
+      amount: -paidCreditsUsed,
+      description: `${description} (paid)`,
+    });
+  }
 }
 
 /**
