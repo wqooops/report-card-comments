@@ -1,19 +1,16 @@
-import { ChartAreaInteractive } from '@/components/dashboard/chart-area-interactive';
 import { DashboardHeader } from '@/components/dashboard/dashboard-header';
-import { DataTable } from '@/components/dashboard/data-table';
-import { SectionCards } from '@/components/dashboard/section-cards';
-import { useTranslations } from 'next-intl';
-
-import data from './data.json';
+import { StatsCards } from '@/components/dashboard/stats-cards';
+import { SingleReports } from '@/components/dashboard/single-reports';
+import { BatchSessions } from '@/components/dashboard/batch-sessions';
+import { getDashboardStats, getSingleReports, getBatchSessions } from '@/actions/dashboard';
+import { getTranslations } from 'next-intl/server';
 
 /**
- * Dashboard page
- *
- * NOTICE: This is a demo page for the dashboard, no real data is used,
- * we will show real data in the future
+ * Dashboard page - Redesigned
+ * Shows real user data: single generation history and batch generation history
  */
-export default function DashboardPage() {
-  const t = useTranslations();
+export default async function DashboardPage() {
+  const t = await getTranslations();
 
   const breadcrumbs = [
     {
@@ -22,18 +19,32 @@ export default function DashboardPage() {
     },
   ];
 
+  // Fetch all dashboard data
+  const [stats, singleReports, batchSessions] = await Promise.all([
+    getDashboardStats(),
+    getSingleReports(5),
+    getBatchSessions(10),
+  ]);
+
   return (
     <>
       <DashboardHeader breadcrumbs={breadcrumbs} />
 
       <div className="flex flex-1 flex-col">
         <div className="@container/main flex flex-1 flex-col gap-2">
-          <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
-            <SectionCards />
-            <div className="px-4 lg:px-6">
-              <ChartAreaInteractive />
-            </div>
-            <DataTable data={data} />
+          <div className="flex flex-col gap-6 p-6">
+            {/* Statistics Cards */}
+            <StatsCards
+              totalReports={stats.totalReports}
+              thisMonth={stats.thisMonth}
+              batchSessions={stats.batchSessions}
+            />
+
+            {/* Single Reports Section */}
+            <SingleReports reports={singleReports} />
+
+            {/* Batch Sessions Section */}
+            <BatchSessions sessions={batchSessions} />
           </div>
         </div>
       </div>
