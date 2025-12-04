@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 export function Logo({ className }: { className?: string }) {
   const { theme } = useTheme();
   const [mounted, setMounted] = useState(false);
-  const logoLight = websiteConfig.metadata.images?.logoLight ?? '/logo.png';
+  const logoLight = websiteConfig.metadata.images?.logoLight ?? '/logo.webp';
   const logoDark = websiteConfig.metadata.images?.logoDark ?? logoLight;
 
   // During server-side rendering and initial client render, always use logoLight
@@ -26,9 +26,9 @@ export function Logo({ className }: { className?: string }) {
       src={logo}
       alt="Logo"
       title="Logo"
-      width={96}
-      height={96}
-      className={cn('size-8 rounded-md', className)}
+      width={40}
+      height={40}
+      className={className || 'size-8 rounded-md'}
     />
   );
 }
