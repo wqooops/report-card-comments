@@ -3,7 +3,7 @@
 import { getDb } from '@/db';
 import { reports, students } from '@/db/schema';
 import { getSession } from '@/lib/server';
-import { and, desc, eq, sql } from 'drizzle-orm';
+import { and, desc, eq, inArray, sql } from 'drizzle-orm';
 import { redirect } from 'next/navigation';
 
 /**
@@ -141,13 +141,22 @@ export async function regenerateBatchCSV(sessionTime: Date) {
 
     // Get corresponding reports
     const studentIds = batchStudents.map(s => s.id);
+    
+    if (studentIds.length === 0) {
+      return {
+        success: true,
+        csv: '',
+        filename: 'empty.csv',
+      };
+    }
+
     const batchReports = await db
       .select({
         studentId: reports.studentId,
         content: reports.content,
       })
       .from(reports)
-      .where(sql`${reports.studentId} = ANY(${studentIds})`);
+      .where(inArray(reports.studentId, studentIds));
 
     // Create a map for quick lookup
     const reportsMap = new Map(batchReports.map(r => [r.studentId, r.content]));
