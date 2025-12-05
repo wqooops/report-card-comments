@@ -304,7 +304,29 @@ export default function BatchPage() {
                       {student.status === 'pending' && <span className="text-slate-500">Pending</span>}
                       {student.status === 'generating' && <span className="text-blue-500 flex items-center gap-1"><Loader2 className="h-3 w-3 animate-spin"/> Generating</span>}
                       {student.status === 'completed' && <span className="text-green-500 flex items-center gap-1"><CheckCircle2 className="h-3 w-3"/> Done</span>}
-                      {student.status === 'error' && <span className="text-red-500 flex items-center gap-1" title={student.error}><AlertCircle className="h-3 w-3"/> Error</span>}
+                      {student.status === 'error' && (
+                        <div className="flex flex-col gap-2">
+                          <span className="text-red-500 flex items-center gap-1" title={student.error}>
+                            <AlertCircle className="h-3 w-3"/> Error
+                          </span>
+                          {student.error === 'Insufficient credits' && (
+                            <div className="rounded-md bg-amber-50 border border-amber-200 p-3 max-w-sm">
+                              <p className="text-xs font-semibold text-amber-900 mb-1 flex items-center gap-1">
+                                💳 Credits Insufficient
+                              </p>
+                              <p className="text-xs text-amber-800 mb-2">
+                                You don't have enough credits to generate this comment. Purchase more credits to continue.
+                              </p>
+                              <a 
+                                href="/pricing" 
+                                className="inline-flex items-center gap-1 text-xs font-medium text-amber-900 hover:text-amber-950 underline underline-offset-2"
+                              >
+                                View Pricing Plans →
+                              </a>
+                            </div>
+                          )}
+                        </div>
+                      )}
                     </TableCell>
                   </TableRow>
                 ))}
