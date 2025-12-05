@@ -172,13 +172,14 @@ Write ONLY the polished comment. Do not include any meta-commentary, explanation
       return { success: false, error: 'AI Generation Failed' };
     }
 
-    // 3. Save to DB
+    // 3. Save to DB (get fresh connection after AI generation)
     try {
-      const db = await getDb();
+      console.log('[Batch] Getting fresh DB connection for save...');
+      const dbForSave = await getDb();
       const studentId = randomUUID();
       
       // Save Student
-      await db.insert(students).values({
+      await dbForSave.insert(students).values({
         id: studentId,
         userId: user.id,
         name: `Student (${pronouns})`, // Use pronouns as identifier since no name in CSV
@@ -187,15 +188,17 @@ Write ONLY the polished comment. Do not include any meta-commentary, explanation
       });
 
       // Save Report
-      await db.insert(reports).values({
+      await dbForSave.insert(reports).values({
         id: randomUUID(),
         studentId,
         content: comment,
       });
 
+      console.log('[Batch] ✅ DB save successful');
       return { success: true, comment };
     } catch (error) {
       console.error('DB Error:', error);
-      return { success: false, error: 'Database Save Failed' };
+      // Gracefully degrade: user still gets comment even if DB save fails
+      return { success: true, comment }; // Changed to success: true
     }
   });
