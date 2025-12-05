@@ -1,4 +1,5 @@
 import { regenerateBatchCSV } from '@/actions/dashboard';
+import { uploadFile } from '@/storage';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
@@ -20,6 +21,21 @@ export async function POST(request: NextRequest) {
         { success: false, error: result.error },
         { status: 500 }
       );
+    }
+
+    // Upload CSV to R2 storage
+    try {
+      const csvBuffer = Buffer.from(result.csv || '', 'utf-8');
+      const uploadResult = await uploadFile(
+        csvBuffer,
+        result.filename || 'batch-export.csv',
+        'text/csv',
+        'template-res'
+      );
+      console.log('CSV uploaded to R2:', uploadResult.url);
+    } catch (uploadError) {
+      // Don't fail the request if upload fails, user still gets the CSV
+      console.error('R2 upload error:', uploadError);
     }
 
     return NextResponse.json({
