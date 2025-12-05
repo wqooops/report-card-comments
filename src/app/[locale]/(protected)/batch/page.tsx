@@ -78,55 +78,105 @@ export default function BatchPage() {
     setIsProcessing(true);
     toast.info('Batch generation started');
     
+    const MAX_RETRIES = 3;
+    let successCount = 0;
+    let failureCount = 0;
+    
     for (let i = 0; i < students.length; i++) {
-      if (students[i].status === 'completed') continue;
+      if (students[i].status === 'completed') {
+        successCount++;
+        continue;
+      }
 
-      setStudents(prev => {
-        const newStudents = [...prev];
-        newStudents[i].status = 'generating';
-        return newStudents;
-      });
-      
-      try {
-        const result = await executeAsync({
-          gradeLevel: students[i].gradeLevel,
-          pronouns: students[i].pronouns,
-          strength: students[i].strength,
-          weakness: students[i].weakness,
-        });
+      let retryCount = 0;
+      let success = false;
 
-        if (result?.data?.success) {
-          setStudents(prev => {
-            const newStudents = [...prev];
-            newStudents[i].status = 'completed';
-            newStudents[i].result = result.data?.comment;
-            return newStudents;
-          });
-        } else {
-          setStudents(prev => {
-            const newStudents = [...prev];
-            newStudents[i].status = 'error';
-            newStudents[i].error = result?.data?.error || 'Unknown error';
-            return newStudents;
-          });
-          
-          if (result?.data?.error === 'Insufficient credits') {
-            toast.error('Insufficient credits. Stopping batch process.');
-            break;
-          }
-        }
-      } catch (error) {
+      // Retry loop (max 3 attempts)
+      while (retryCount < MAX_RETRIES && !success) {
         setStudents(prev => {
           const newStudents = [...prev];
-          newStudents[i].status = 'error';
-          newStudents[i].error = 'Network error';
+          newStudents[i].status = 'generating';
           return newStudents;
         });
+        
+        try {
+          console.log(`[Batch] Processing student ${i + 1}/${students.length}, attempt ${retryCount + 1}/${MAX_RETRIES}`);
+          
+          const result = await executeAsync({
+            gradeLevel: students[i].gradeLevel,
+            pronouns: students[i].pronouns,
+            strength: students[i].strength,
+            weakness: students[i].weakness,
+          });
+
+          if (result?.data?.success) {
+            setStudents(prev => {
+              const newStudents = [...prev];
+              newStudents[i].status = 'completed';
+              newStudents[i].result = result.data?.comment;
+              return newStudents;
+            });
+            success = true;
+            successCount++;
+            console.log(`[Batch] ✅ Student ${i + 1} succeeded`);
+          } else {
+            const errorMsg = result?.data?.error || 'Unknown error';
+            console.log(`[Batch] ❌ Student ${i + 1} failed (attempt ${retryCount + 1}): ${errorMsg}`);
+            
+            // Check if it's a permanent failure (insufficient credits)
+            if (errorMsg === 'Insufficient credits') {
+              console.log(`[Batch] ⚠️ Insufficient credits, skipping retries for student ${i + 1}`);
+              retryCount = MAX_RETRIES; // Skip remaining retries
+              setStudents(prev => {
+                const newStudents = [...prev];
+                newStudents[i].status = 'error';
+                newStudents[i].error = errorMsg;
+                return newStudents;
+              });
+              failureCount++;
+              break; // Exit retry loop for this student
+            }
+            
+            retryCount++;
+            if (retryCount >= MAX_RETRIES) {
+              setStudents(prev => {
+                const newStudents = [...prev];
+                newStudents[i].status = 'error';
+                newStudents[i].error = errorMsg;
+                return newStudents;
+              });
+              failureCount++;
+            } else {
+              // Wait before retry (exponential backoff)
+              const delay = Math.min(1000 * Math.pow(2, retryCount), 5000);
+              console.log(`[Batch] ⏳ Waiting ${delay}ms before retry...`);
+              await new Promise(resolve => setTimeout(resolve, delay));
+            }
+          }
+        } catch (error) {
+          console.error(`[Batch] ❌ Network error for student ${i + 1} (attempt ${retryCount + 1}):`, error);
+          retryCount++;
+          
+          if (retryCount >= MAX_RETRIES) {
+            setStudents(prev => {
+              const newStudents = [...prev];
+              newStudents[i].status = 'error';
+              newStudents[i].error = 'Network error after 3 retries';
+              return newStudents;
+            });
+            failureCount++;
+          } else {
+            // Wait before retry
+            const delay = Math.min(1000 * Math.pow(2, retryCount), 5000);
+            await new Promise(resolve => setTimeout(resolve, delay));
+          }
+        }
       }
     }
     
     setIsProcessing(false);
-    toast.success('Batch processing finished');
+    console.log(`[Batch] ✅ Complete! Success: ${successCount}, Failed: ${failureCount}`);
+    toast.success(`Batch completed! ${successCount} successful, ${failureCount} failed`);
   };
 
   const exportToCSV = () => {
