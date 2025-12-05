@@ -27,13 +27,13 @@ export default function BatchPage() {
 
   const { executeAsync } = useAction(processBatchItemAction);
 
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
     setIsUploading(true);
     const reader = new FileReader();
-    reader.onload = (e) => {
+    reader.onload = async (e) => {
       try {
         const text = e.target?.result as string;
         const lines = text.split('\n');
@@ -61,9 +61,39 @@ export default function BatchPage() {
             parsedData.push(student);
           }
         }
-        
-        setStudents(parsedData);
-        toast.success(`Parsed ${parsedData.length} students from CSV`);
+
+        // Check user credits and limit students accordingly
+        try {
+          const creditResult = await fetch('/api/get-credit-balance').then(res => res.json()) as { credits?: number };
+          if (creditResult.credits !== undefined) {
+            const userCredits = creditResult.credits;
+            const maxStudents = Math.floor(userCredits / 10); // 10 credits per generation
+            
+            if (parsedData.length > maxStudents) {
+              const limitedData = parsedData.slice(0, maxStudents);
+              const skippedCount = parsedData.length - maxStudents;
+              
+              setStudents(limitedData);
+              toast.warning(
+                `⚠️ ${limitedData.length} students imported. ${skippedCount} students skipped due to insufficient credits (need ${skippedCount * 10} more credits).`,
+                { duration: 6000 }
+              );
+              console.log(`[CSV Upload] Limited to ${maxStudents} students (${userCredits} credits available)`);
+            } else {
+              setStudents(parsedData);
+              toast.success(`✅ Parsed ${parsedData.length} students from CSV`);
+            }
+          } else {
+            // Fallback: if credit check fails, still import all
+            setStudents(parsedData);
+            toast.success(`Parsed ${parsedData.length} students from CSV`);
+          }
+        } catch (creditError) {
+          console.error('[CSV Upload] Credit check failed:', creditError);
+          // Fallback: if credit check fails, still import all
+          setStudents(parsedData);
+          toast.success(`Parsed ${parsedData.length} students from CSV`);
+        }
       } catch (error) {
         console.error(error);
         toast.error('Failed to parse CSV file');
