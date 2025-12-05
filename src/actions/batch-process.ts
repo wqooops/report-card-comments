@@ -40,7 +40,7 @@ export const processBatchItemAction = actionClient
     try {
       await consumeCredits({
         userId: user.id,
-        amount: 1,
+        amount: 10,
         description: `Batch generation for student with pronouns ${pronouns}`,
       });
     } catch (error) {

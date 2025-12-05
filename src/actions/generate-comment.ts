@@ -3,7 +3,7 @@
 import { actionClient } from '@/lib/safe-action';
 import { z } from 'zod';
 import { getDb } from '@/db';
-import { guestUsage } from '@/db/schema';
+import { guestUsage, students, reports } from '@/db/schema';
 import { eq, sql } from 'drizzle-orm';
 import { headers } from 'next/headers';
 import { consumeCredits } from '@/credits/credits';
@@ -43,7 +43,7 @@ export const generateCommentAction = actionClient
       try {
         await consumeCredits({
           userId: user.id,
-          amount: 1,
+          amount: 10,
           description: `Generate comment for ${studentName || 'student'}`,
         });
       } catch (error) {
@@ -232,6 +232,44 @@ Write ONLY the polished comment. Do not include any meta-commentary, explanation
       }
 
       const generatedComment = outputArray.join('');
+
+      // 3. Save to Database (if user is logged in)
+      // Get fresh DB connection after generation completes
+      if (user) {
+        try {
+          const dbForSave = await getDb();
+          
+          // Create student record
+          const studentId = crypto.randomUUID();
+          await dbForSave.insert(students).values({
+            id: studentId,
+            userId: user.id,
+            name: studentName || 'Student',
+            grade: gradeLevel,
+            attributes: JSON.stringify({
+              pronouns,
+              strength,
+              weakness: weakness,
+              framework: framework || 'General',
+              tone: tone || 'Professional',
+            }),
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          });
+          
+          // Create report record
+          const reportId = crypto.randomUUID();
+          await dbForSave.insert(reports).values({
+            id: reportId,
+            studentId,
+            content: generatedComment.trim(),
+            createdAt: new Date(),
+          });
+        } catch (dbError) {
+          console.error('Database save error:', dbError);
+          // Don't fail the request if DB save fails - user still gets the comment
+        }
+      }
 
       return {
         success: true,
