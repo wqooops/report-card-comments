@@ -92,23 +92,32 @@ export class S3Provider implements StorageProvider {
    */
   public async uploadFile(params: UploadFileParams): Promise<UploadFileResult> {
     try {
+      console.log('[S3Provider] uploadFile called');
       const { file, filename, contentType, folder } = params;
+      console.log('[S3Provider] Params:', { filename, contentType, folder, fileSize: file instanceof Buffer ? file.length : 'blob' });
+      
       const s3 = this.getS3Client();
       const { bucketName } = this.config;
+      console.log('[S3Provider] Bucket:', bucketName);
 
       const uniqueFilename = this.generateUniqueFilename(filename);
       const key = folder ? `${folder}/${uniqueFilename}` : uniqueFilename;
+      console.log('[S3Provider] Generated key:', key);
 
       // Convert Blob to Buffer if needed
       let fileContent: Buffer | string;
       if (file instanceof Blob) {
         fileContent = Buffer.from(await file.arrayBuffer());
+        console.log('[S3Provider] Converted Blob to Buffer, size:', fileContent.length);
       } else {
         fileContent = file;
+        console.log('[S3Provider] Using Buffer directly, size:', fileContent.length);
       }
 
       // Upload the file using s3mini
+      console.log('[S3Provider] Starting S3 putObject...');
       const response = await s3.putObject(key, fileContent, contentType);
+      console.log('[S3Provider] S3 response:', { ok: response.ok, status: response.status, statusText: response.statusText });
 
       if (!response.ok) {
         throw new UploadError(`Failed to upload file: ${response.statusText}`);
@@ -121,19 +130,19 @@ export class S3Provider implements StorageProvider {
       if (publicUrl) {
         // Use custom domain if provided
         url = `${publicUrl.replace(/\/$/, '')}/${key}`;
-        console.log('uploadFile, public url', url);
+        console.log('[S3Provider] ✅ Upload successful! Public URL:', url);
       } else {
         // For s3mini, we construct the URL manually
         // Since bucket is included in endpoint, we just append the key
         const baseUrl = this.config.endpoint?.replace(/\/$/, '') || '';
         url = `${baseUrl}/${key}`;
-        console.log('uploadFile, constructed url', url);
+        console.log('[S3Provider] ✅ Upload successful! Constructed URL:', url);
       }
 
       return { url, key };
     } catch (error) {
       if (error instanceof ConfigurationError) {
-        console.error('uploadFile, configuration error', error);
+        console.error('[S3Provider] ❌ Configuration error:', error);
         throw error;
       }
 
@@ -141,7 +150,7 @@ export class S3Provider implements StorageProvider {
         error instanceof Error
           ? error.message
           : 'Unknown error occurred during file upload';
-      console.error('uploadFile, error', message);
+      console.error('[S3Provider] ❌ Upload error:', message);
       throw new UploadError(message);
     }
   }
