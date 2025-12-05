@@ -152,3 +152,19 @@ export const reports = pgTable("reports", {
 }, (table) => ({
 	reportStudentIdIdx: index("report_student_id_idx").on(table.studentId),
 }));
+
+export const batchFiles = pgTable("batch_files", {
+	id: text("id").primaryKey(),
+	userId: text("user_id").notNull().references(() => user.id, { onDelete: 'cascade' }),
+	sessionTime: timestamp("session_time").notNull(),
+	filename: text("filename").notNull(),
+	r2Url: text("r2_url").notNull(),
+	r2Key: text("r2_key").notNull(),
+	studentCount: integer("student_count").notNull(),
+	createdAt: timestamp("created_at").notNull().defaultNow(),
+	expiresAt: timestamp("expires_at").notNull(),
+}, (table) => ({
+	batchFileUserIdIdx: index("batch_file_user_id_idx").on(table.userId),
+	batchFileSessionIdx: index("batch_file_session_idx").on(table.sessionTime),
+	batchFileExpiresIdx: index("batch_file_expires_idx").on(table.expiresAt),
+}));

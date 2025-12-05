@@ -43,6 +43,21 @@ export function BatchSessions({ sessions }: BatchSessionsProps) {
         throw new Error(data.error || 'Download failed');
       }
 
+      // Check if we have a direct R2 URL
+      if ((data as any).url) {
+        // Direct download from R2
+        const link = document.createElement('a');
+        link.href = (data as any).url;
+        link.download = data.filename || 'batch-export.csv';
+        link.style.display = 'none';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        toast.success('Batch CSV downloaded from cloud storage');
+        return;
+      }
+
+      // Fallback: Download from CSV content (backward compatibility)
       if (!data.csv || !data.filename) {
         throw new Error('Invalid response from server');
       }
