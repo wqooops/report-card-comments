@@ -207,6 +207,30 @@ export default function BatchPage() {
     setIsProcessing(false);
     console.log(`[Batch] ✅ Complete! Success: ${successCount}, Failed: ${failureCount}`);
     toast.success(`Batch completed! ${successCount} successful, ${failureCount} failed`);
+
+    // Auto-upload CSV to R2 if there are successful results
+    if (successCount > 0) {
+      try {
+        console.log('[Batch] Auto-uploading CSV to R2...');
+        const sessionTime = new Date().toISOString();
+        const response = await fetch('/api/download-batch-csv', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ sessionTime }),
+        });
+
+        if (response.ok) {
+          const data = await response.json() as { success?: boolean; url?: string };
+          if (data.success && data.url) {
+            console.log('[Batch] ✅ CSV auto-uploaded to R2:', data.url);
+            toast.success('Results saved to cloud storage!', { duration: 3000 });
+          }
+        }
+      } catch (uploadError) {
+        console.error('[Batch] Auto-upload to R2 failed:', uploadError);
+        // Don't show error to user, it's not critical
+      }
+    }
   };
 
   const exportToCSV = () => {
